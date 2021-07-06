@@ -29,7 +29,7 @@ float distance(pair<float, float> p1, pair<float, float> p2)
     float y1 = p1.second;
     float x2 = p2.first;
     float y2 = p2.second;
-    float dis = pow((pow((x1 - x2), 2) + pow((y1 - y2), 2)), 0.5);
+    float dis = (pow((x1 - x2), 2) + pow((y1 - y2), 2));
     return dis;
 }
 
