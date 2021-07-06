@@ -8,7 +8,7 @@ for i in range(0, len(words)):
     words[i] = float(words[i]) 
       
 plt.plot(word1, words, color = 'red', marker = "o")
-plt.xlabel("X-NoOfCluster")
-plt.ylabel("Y-SumOfSquareOfDistances")
+plt.xlabel("X-No Of Cluster")
+plt.ylabel("Y-Sum of squared errors")
 plt.show()
 fileObj. close()
