@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <bits/stdc++.h>
 #include <vector>
 #include <utility>
@@ -52,6 +53,7 @@ pair<float, float> coOrdinates(vector<pair<float, float>> subKCluster)
 vector<pair<pair<float, float>, vector<pair<float, float>>>> kMeansClustering(int k, vector<pair<float, float>> vec)
 {
     vector<pair<pair<float, float>, vector<pair<float, float>>>> kCluster(k);
+
     for (int i = 0; i < k; i++)
     {
         ((kCluster[i]).second).push_back(vec[i]);
@@ -92,68 +94,83 @@ label:
         }
         goto label;
     }
+    // else
+    // {
+    //     for (int g = 0; g < k; g++)
+    //     {
+    //         pair<float, float> p = coOrdinates((kCluster[g]).second);
+    //         (kCluster[g]).first = p;
+    //     }
+    // }
     return kCluster;
 }
 
-float overallSumOfDistace(vector<pair<pair<float, float>, vector<pair<float, float>>>> finalKMeansCluster){
+float overallSumOfDistace(vector<pair<pair<float, float>, vector<pair<float, float>>>> finalKMeansCluster)
+{
     float result = 0;
     int k = finalKMeansCluster.size();
-    for(int i=0;i<k;i++){
+    for (int i = 0; i < k; i++)
+    {
         float x1 = finalKMeansCluster[i].first.first;
         float y1 = finalKMeansCluster[i].first.second;
         int a = finalKMeansCluster[i].second.size();
-        for(int j=0;j<a;j++){
+        for (int j = 0; j < a; j++)
+        {
             float x2 = finalKMeansCluster[i].second[j].first;
             float y2 = finalKMeansCluster[i].second[j].second;
-            result = result + distance(make_pair(x1,y1),make_pair(x2,y2));
+            result = result + distance(make_pair(x1, y1), make_pair(x2, y2));
         }
     }
     return result;
-
 }
 
 int main()
 {
     vector<pair<float, float>> vec(20);
-    vec[0] = make_pair(20,22);
-    vec[1] = make_pair(23,32);
-    vec[2] = make_pair(8,5);
-    vec[3] = make_pair(3,3);
-    vec[4] = make_pair(6,25);
-    vec[5] = make_pair(24,4);
-    vec[6] = make_pair(23,34);
-    vec[7] = make_pair(45,5);
-    vec[8] = make_pair(6,7);
-    vec[9] = make_pair(2,2);
-    vec[10] = make_pair(9,10);
-    vec[11] = make_pair(11,10);
-    vec[12] = make_pair(16,16);
-    vec[13] = make_pair(45,23);
-    vec[14] = make_pair(23,2);
-    vec[15] = make_pair(22,2);
-    vec[16] = make_pair(56,7);
-    vec[17] = make_pair(9,2);
-    vec[18] = make_pair(8,2);
-    vec[19] = make_pair(55,48);
+    vec[0] = make_pair(20, 22);
+    vec[1] = make_pair(23, 12);
+    vec[2] = make_pair(8, 5);
+    vec[3] = make_pair(3, 3);
+    vec[4] = make_pair(6, 25);
+    vec[5] = make_pair(24, 4);
+    vec[6] = make_pair(23, 14);
+    vec[7] = make_pair(45, 5);
+    vec[8] = make_pair(6, 7);
+    vec[9] = make_pair(2, 2);
+    vec[10] = make_pair(9, 10);
+    vec[11] = make_pair(11, 10);
+    vec[12] = make_pair(16, 16);
+    vec[13] = make_pair(5, 23);
+    vec[14] = make_pair(23, 2);
+    vec[15] = make_pair(22, 2);
+    vec[16] = make_pair(56, 7);
+    vec[17] = make_pair(9, 2);
+    vec[18] = make_pair(8, 2);
+    vec[19] = make_pair(5, 48);
 
     int k;
-    cout<<"How many cluster you want: ";
-    cin>>k;
-
-    vector<pair<pair<float, float>, vector<pair<float, float>>>> finalKMeansCluster = kMeansClustering(k, vec);
-    for (int i = 0; i < k; i++)
+    ofstream myfile;
+    myfile.open("example1.txt");
+    for (k = 1; k < 10; k++)
     {
-        cout << ((finalKMeansCluster[i]).first).first << " " << ((finalKMeansCluster[i]).first).second;
-        cout << endl;
-        printf("This is the %dth cluster and below are its vector-pair-->\n", i + 1);
-        for (int j = 0; j < (finalKMeansCluster[i]).second.size(); j++)
+        vector<pair<pair<float, float>, vector<pair<float, float>>>> finalKMeansCluster = kMeansClustering(k, vec);
+        for (int i = 0; i < k; i++)
         {
-            cout << ((finalKMeansCluster[i]).second)[j].first << " " << ((finalKMeansCluster[i]).second)[j].second << endl;
+            cout << ((finalKMeansCluster[i]).first).first << " " << ((finalKMeansCluster[i]).first).second;
+            cout << endl;
+            printf("This is the %dth cluster and below are its vector-pair-->\n", i + 1);
+            for (int j = 0; j < (finalKMeansCluster[i]).second.size(); j++)
+            {
+                cout << ((finalKMeansCluster[i]).second)[j].first << " " << ((finalKMeansCluster[i]).second)[j].second << endl;
+            }
+            cout << endl;
         }
-        cout << endl;
+        float dis = overallSumOfDistace(finalKMeansCluster);
+        cout << "The total distance that is the sum of each cluster with their corresponding data is: " << dis << endl;
+        myfile << dis << endl;
     }
-    float dis = overallSumOfDistace(finalKMeansCluster);
-    cout<<"The total distance that is the sum of each cluster with their corresponding data is: "<<dis<<endl;
+
+    myfile.close();
 
     return 0;
 }
